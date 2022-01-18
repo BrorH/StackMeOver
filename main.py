@@ -1,21 +1,20 @@
+#!/usr/bin/env python3
 from googlesearch import search
 from bs4 import BeautifulSoup
 import os 
 import requests
 import sys
-
-try:
-    query = sys.argv[1]
-    assert len(sys.argv) == 2
-except IndexError:
-    print("No query given")
-    sys.exit(1)
-except AssertionError:
-    print("If query contains several words, it must be passed as a string")
-    sys.exit(1)
+import argparse
 
 
+parser = argparse.ArgumentParser(description='Executes the first StackOverflow code snippet matching your query')
+parser.add_argument('query', metavar='query', type=str, nargs=1,help='The query you wish to search for')
+parser.add_argument('--y', action="store_true", help="YOLO mode - runs the retrieved command without asking for confirmation or even telling you what it is")
+args = parser.parse_args()
+
+query = args.query[0]
 print(f"Querying '{query}'")
+
 for url in search(f"{query} site:stackoverflow.com", stop=1):
     r = requests.get(url)
 
@@ -28,7 +27,7 @@ command = codeblock.find_all('code')[0].get_text()
 command = command.lstrip("$")
 
 # run command
-print(f"Do you wish to run the command: \n $ {command}")
+print(f"Do you wish to run the command: \n {command}")
 user_input = ""
 while user_input.lower() not in ["y", "n"]:
     user_input = input("(y/n): ").lower().strip(" ")
