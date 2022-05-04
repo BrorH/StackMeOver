@@ -15,7 +15,7 @@ args = parser.parse_args()
 query = args.query[0]
 print(f"Querying '{query}'")
 
-for url in search(f"{query} site:stackoverflow.com", stop=1):
+for url in search(f"{query} site:stackoverflow.com"):
     r = requests.get(url)
 
 soup = BeautifulSoup(r.text, features="lxml")
@@ -27,16 +27,20 @@ command = codeblock.find_all('code')[0].get_text()
 command = command.lstrip("$")
 
 # run command
-print(f"Do you wish to run the command: \n {command}")
-user_input = ""
-while user_input.lower() not in ["y", "n"]:
-    user_input = input("(y/n): ").lower().strip(" ")
-    if user_input == "y":
-        os.system(command)
-    elif user_input == "n":
-        print("That's probably the smartest choice anyway...")
-    else:
-        print("Invalid input")
+if not args.y:
+    print(f"Do you wish to run the command: \n {command}")
+    user_input = ""
+    while user_input.lower() not in ["y", "n"]:
+        user_input = input("(y/n): ").lower().strip(" ")
+        if user_input == "y":
+            os.system(command)
+        elif user_input == "n":
+            print("That's probably the smartest choice anyway...")
+        else:
+            print("Invalid input")
+else:
+    print("YOLO mode activated B)")
+    os.system(command)
     
 
 
