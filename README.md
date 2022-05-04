@@ -5,7 +5,7 @@ Executes the first StackOverflow code snippet matching a query. By default it wi
 
 ## Requirements
 `python3.x` and the module [beautifulsoup4](https://pypi.org/project/beautifulsoup4/)
-
+There's probably some modules that I've forgot to mention, but if you made it this far you'll probably figure it out yourself.
 
 ## Usage
 ```
